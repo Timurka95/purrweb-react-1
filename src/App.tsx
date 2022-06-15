@@ -1,24 +1,51 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import { TrelloWorkspaceScreen } from "./pages/TrelloWorkspace/screens/";
+import { ChangeNameModal } from "./components";
+import "./assets/styles/App.css";
+import { useState } from "react";
 
 function App() {
+  const [userName, setUserName] = useState<string>();
+  const [changeNameModalFlag, setChangeNameModalFlag] = useState(false);
+  const isHasName = !!localStorage.getItem("userName");
+
+  const handleSaveUserName = (value: string) => {
+    setUserName(value)
+  };
+
+  const handleShowChangeNameModal = () => {
+    return (
+      <ChangeNameModal
+        onSave={handleSaveUserName}
+        currentName={userName}
+        hideModal={setChangeNameModalFlag}
+      />
+    );
+  }
+
+  useEffect(() => {
+    if (!isHasName) {
+      <ChangeNameModal
+        onSave={handleSaveUserName}
+        currentName={userName}
+        hideModal={setChangeNameModalFlag}
+      />;
+    }
+  }, [isHasName, userName]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {!isHasName && (
+        <ChangeNameModal
+          onSave={handleSaveUserName}
+          hideModal={setChangeNameModalFlag}
+        />
+      )}
+      <TrelloWorkspaceScreen
+        onNameClick={handleShowChangeNameModal}
+        changeNameModalFlag={changeNameModalFlag}
+        setChangeNameModalFlag={setChangeNameModalFlag}
+      />
     </div>
   );
 }
