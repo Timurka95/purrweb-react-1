@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 interface ChangeNameModalProps {
-  onSave: (value: string) => void;
+  onSave: Function;
   currentName?: string;
   hideModal: (value: boolean) => void;
 }

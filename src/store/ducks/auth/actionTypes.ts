@@ -1,0 +1,1 @@
+export const setNameActionType = 'auth/SET_NAME';
